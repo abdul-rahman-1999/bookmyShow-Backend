@@ -11,7 +11,7 @@ import cors from 'cors';
 
 const app = express();
 
-const PORT = 4001;
+const PORT = process.env.PORT;
        
 // const MONGO_URL = "mongodb://127.0.0.1";
 
