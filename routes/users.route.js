@@ -45,7 +45,7 @@ async function genHashedPassword(password){
         const storedPassword = userFromDb.password;
         const isPasswordMatch = await bcrypt.compare(password, storedPassword);
         if(isPasswordMatch){
-          const token = jwt.sign({id:userFromDb._id}, process.env.SECRET_KEY)
+          const token = jwt.sign({id:userFromDb._id,email}, process.env.SECRET_KEY)
           response.send({msg:"Login Successfully",token:token})
         }else{
           response.status(400).send({msg:"Invalid Credentials"})
