@@ -1,5 +1,5 @@
 import express from 'express'
-import {CreateUser,getUserByName} from '../services/users.service.js'
+import {CreateUser,getUserByEmail,getUserByName} from '../services/users.service.js'
 const router = express.Router()
 import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken";
@@ -46,11 +46,19 @@ async function genHashedPassword(password){
         const isPasswordMatch = await bcrypt.compare(password, storedPassword);
         if(isPasswordMatch){
           const token = jwt.sign({id:userFromDb._id,email}, process.env.SECRET_KEY)
-          response.send({msg:"Login Successfully",token:token})
+          response.send({msg:"Login Successfully",token:token,userDetail:userFromDb})
         }else{
           response.status(400).send({msg:"Invalid Credentials"})
         }
         }
+      })
+
+      router.get('/getDetails/:email', async function(request,response){
+        let {email} = request.params
+        console.log(request.params)
+        const result = await getUserByEmail(email);
+        console.log(result)
+        response.send(result)
       })
 
       export default router

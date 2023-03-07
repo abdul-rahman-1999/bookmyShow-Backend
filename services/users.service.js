@@ -8,3 +8,7 @@ export async function CreateUser(data) {
 export async function getUserByName(email,role) {
     return await client.db('b39wd').collection('user').findOne({email:email},{role:role});
 }
+
+export async function getUserByEmail(email) {
+    return await client.db('b39wd').collection('user').findOne({email:email});
+}

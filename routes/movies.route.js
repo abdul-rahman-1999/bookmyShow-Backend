@@ -85,6 +85,7 @@ router.delete("/movies/:id", auth, async function (request, response) {
     let {email} = request.body
     const result = await getMoviesbyId(id)
     console.log(result)
+
     if(result){
       const transporter = nodemailer.createTransport({
         service:"gmail",
@@ -93,14 +94,13 @@ router.delete("/movies/:id", auth, async function (request, response) {
           pass:process.env.PASSWORD,
         }
       })
-
        const mailOptions = {
         from:process.env.EMAIL,
         to:email,
         subject:"Sending Mail Regarding Tickets",
         text:`You Booked a Ticket for ${result.name} at ${result.theaters[0].theatername} and the time is ${result.shows[0].show}`
        }
-
+       
        transporter.sendMail(mailOptions,(error,info) => {
         if(error){
           console.log("error",error)
